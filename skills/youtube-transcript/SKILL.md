@@ -39,7 +39,8 @@ Transcript and summarize calls are asynchronous. A successful create returns
 **HTTP 202** with `{ "id": "..." }` — this is success, not an error. Then:
 
 1. Call `GET /v1/transcript/:id`.
-2. If `status` is `queued` or `processing`, wait ~10s and poll again.
+2. If `status` is `queued` or `processing`, wait **10–20 seconds** before polling
+   again (e.g. `sleep 15`). Do **not** poll more often than once every 10 seconds.
 3. Stop when `status` is `completed` (use `result`) or `failed` (report `error`).
 4. A create call may instead return **200** with the full result already attached
    (cache hit) — in that case, skip polling.
