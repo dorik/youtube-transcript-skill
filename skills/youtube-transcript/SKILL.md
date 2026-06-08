@@ -13,13 +13,15 @@ videos, channels, and playlists through the Transcript API.
 This API uses a personal API key, read from the `TRANSCRIPT_API_KEY` environment
 variable so the user only provides it once.
 
-1. Check the `TRANSCRIPT_API_KEY` environment variable. If it is set, use it — do
-   **not** ask the user.
-2. If it is **not** set, ask the user for their key (they can create one in the
-   dashboard under **API Keys**, `https://<dashboard-url>/api-keys`). Use it for
-   this session, then tell them to make it permanent — so they are never asked
-   again — by adding this line to their shell profile (e.g. `~/.zshrc`) and
-   reopening their terminal:
+1. Read the `TRANSCRIPT_API_KEY` environment variable (it is already loaded from
+   the user's shell profile). If it is set, use it — do **not** ask the user.
+2. If it is **not** set, ask the user for their key **directly** — do **not**
+   search shell profiles or other files for it; an unset variable means it is
+   genuinely not configured yet. They can create a key in the dashboard under
+   **API Keys** (`https://<dashboard-url>/api-keys`). Use it for this session,
+   then tell them to make it permanent — so they are never asked again — by
+   adding this line to their shell profile (e.g. `~/.zshrc`) and reopening their
+   terminal:
 
    ```
    export TRANSCRIPT_API_KEY=yt_live_...
