@@ -22,14 +22,14 @@ The base URL is `https://yt-transcripts-api-1nwp.onrender.com`.
 
 ## When to use which endpoint
 
-| The user wants… | Use |
-| --- | --- |
-| Transcript/captions of one video | `POST /v1/transcript` |
-| A summary (TL;DR + key points) of one video | `POST /v1/summarize` |
-| Transcript translated to another language | `POST /v1/transcript` with `translate_to` |
-| Transcripts for a whole playlist / channel / list of videos | `POST /v1/transcripts/bulk` |
-| To find videos/channels | `GET /v1/search` |
-| Recent videos from a channel | `GET /v1/channel/videos` |
+| The user wants…                                             | Use                                       |
+| ----------------------------------------------------------- | ----------------------------------------- |
+| Transcript/captions of one video                            | `POST /v1/transcript`                     |
+| A summary (TL;DR + key points) of one video                 | `POST /v1/summarize`                      |
+| Transcript translated to another language                   | `POST /v1/transcript` with `translate_to` |
+| Transcripts for a whole playlist / channel / list of videos | `POST /v1/transcripts/bulk`               |
+| To find videos/channels                                     | `GET /v1/search`                          |
+| Recent videos from a channel                                | `GET /v1/channel/videos`                  |
 
 Full parameter and credit details: see `references/api.md`.
 
@@ -39,7 +39,7 @@ Transcript and summarize calls are asynchronous. A successful create returns
 **HTTP 202** with `{ "id": "..." }` — this is success, not an error. Then:
 
 1. Call `GET /v1/transcript/:id`.
-2. If `status` is `queued` or `processing`, wait ~2s and poll again.
+2. If `status` is `queued` or `processing`, wait ~10s and poll again.
 3. Stop when `status` is `completed` (use `result`) or `failed` (report `error`).
 4. A create call may instead return **200** with the full result already attached
    (cache hit) — in that case, skip polling.
@@ -47,6 +47,7 @@ Transcript and summarize calls are asynchronous. A successful create returns
 ## Examples
 
 ### 1. Transcript of one video
+
 ```bash
 # create
 curl -s -X POST https://yt-transcripts-api-1nwp.onrender.com/v1/transcript \
@@ -61,6 +62,7 @@ curl -s https://yt-transcripts-api-1nwp.onrender.com/v1/transcript/abc123 \
 ```
 
 ### 2. AI summary of one video
+
 ```bash
 curl -s -X POST https://yt-transcripts-api-1nwp.onrender.com/v1/summarize \
   -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" \
@@ -69,6 +71,7 @@ curl -s -X POST https://yt-transcripts-api-1nwp.onrender.com/v1/summarize \
 ```
 
 ### 3. Whole playlist (bulk)
+
 ```bash
 curl -s -X POST https://yt-transcripts-api-1nwp.onrender.com/v1/transcripts/bulk \
   -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" \
