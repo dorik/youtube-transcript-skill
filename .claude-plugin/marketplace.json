@@ -1,0 +1,11 @@
+{
+  "name": "dorik",
+  "owner": { "name": "Dorik" },
+  "plugins": [
+    {
+      "name": "youtube-transcript",
+      "source": "./",
+      "description": "Fetch YouTube transcripts, translations, and AI summaries via the Transcript API (bring your own key)."
+    }
+  ]
+}
