@@ -1,6 +1,6 @@
 # Transcript API — Endpoint Reference
 
-Base URL: `https://api.<your-domain>` (confirm with the user). All requests
+Base URL: `https://yt-transcripts-api-1nwp.onrender.com`. All requests
 require `Authorization: Bearer yt_live_...`. Responses are JSON.
 
 Transcript and summary jobs are **asynchronous**: a create call returns
