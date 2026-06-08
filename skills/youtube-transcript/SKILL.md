@@ -10,13 +10,23 @@ videos, channels, and playlists through the Transcript API.
 
 ## Authentication (bring your own key)
 
-This API uses a personal API key.
+This API uses a personal API key, read from the `TRANSCRIPT_API_KEY` environment
+variable so the user only provides it once.
 
-1. If you do not already have the user's key, ask them for it. Tell them they can
-   create one in the dashboard under **API Keys** (`https://<dashboard-url>/api-keys`).
-2. Store the key in your secure config. **Never** print it back to the user or
-   write it into logs or files.
-3. Send it on every request as a header: `Authorization: Bearer yt_live_...`.
+1. Check the `TRANSCRIPT_API_KEY` environment variable. If it is set, use it — do
+   **not** ask the user.
+2. If it is **not** set, ask the user for their key (they can create one in the
+   dashboard under **API Keys**, `https://<dashboard-url>/api-keys`). Use it for
+   this session, then tell them to make it permanent — so they are never asked
+   again — by adding this line to their shell profile (e.g. `~/.zshrc`) and
+   reopening their terminal:
+
+   ```
+   export TRANSCRIPT_API_KEY=yt_live_...
+   ```
+
+3. **Never** print the key back to the user or write it into logs or files.
+4. Send it on every request as a header: `Authorization: Bearer $TRANSCRIPT_API_KEY`.
 
 The base URL is `https://yt-transcripts-api-1nwp.onrender.com`.
 
@@ -50,20 +60,20 @@ Transcript and summarize calls are asynchronous. A successful create returns
 ```bash
 # create
 curl -s -X POST https://yt-transcripts-api-1nwp.onrender.com/v1/transcript \
-  -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TRANSCRIPT_API_KEY" -H "Content-Type: application/json" \
   -d '{"url":"https://www.youtube.com/watch?v=VIDEO_ID"}'
 # -> {"id":"abc123"}  (HTTP 202)
 
 # poll until completed
 curl -s https://yt-transcripts-api-1nwp.onrender.com/v1/transcript/abc123 \
-  -H "Authorization: Bearer $KEY"
+  -H "Authorization: Bearer $TRANSCRIPT_API_KEY"
 # -> {"id":"abc123","status":"completed","result":{...transcript...}}
 ```
 
 ### 2. AI summary of one video
 ```bash
 curl -s -X POST https://yt-transcripts-api-1nwp.onrender.com/v1/summarize \
-  -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TRANSCRIPT_API_KEY" -H "Content-Type: application/json" \
   -d '{"url":"https://youtu.be/VIDEO_ID"}'
 # poll GET /v1/transcript/:id -> result.summary = {tldr, key_points, model, generated_at}
 ```
@@ -71,7 +81,7 @@ curl -s -X POST https://yt-transcripts-api-1nwp.onrender.com/v1/summarize \
 ### 3. Whole playlist (bulk)
 ```bash
 curl -s -X POST https://yt-transcripts-api-1nwp.onrender.com/v1/transcripts/bulk \
-  -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TRANSCRIPT_API_KEY" -H "Content-Type: application/json" \
   -d '{"playlist":"https://www.youtube.com/playlist?list=PLAYLIST_ID"}'
 # -> {"id":"batch_xyz"} ; poll GET /v1/transcripts/batches/batch_xyz
 ```
