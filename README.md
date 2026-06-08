@@ -28,9 +28,8 @@ cp -r skills/youtube-transcript ~/.claude/skills/youtube-transcript
 ```
 
 That's it. The skill auto-loads and triggers when you ask for a YouTube
-transcript or summary. On first use, the agent asks for your API key and tells
-you how to save it as the `TRANSCRIPT_API_KEY` environment variable (in your
-shell profile), so later sessions never ask again.
+transcript or summary. On first use, the agent asks for your API key and stores
+it locally.
 
 ## Files
 - `skills/youtube-transcript/SKILL.md` — what the agent reads (capabilities, auth, examples).
